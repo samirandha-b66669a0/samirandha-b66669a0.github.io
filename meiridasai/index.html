@@ -1,0 +1,1852 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日大赛黑料在线入口 - 赛事争议与社区爆料聚合</title>
+  <meta name="description" content="每日大赛黑料在线入口汇聚各类网络大赛争议事件、选手爆料与社区讨论，提供黑料档案、深度解析、用户评论和最新动态，适合关注赛事内幕与争议话题的网友查阅。">
+  <meta name="keywords" content="大赛争议事件,选手爆料,赛事黑料档案,社区讨论,在线赛事">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23151b2a'/%3E%3Cpath d='M25 30h50v10H25zm0 20h30v10H25zm0 20h40v10H25z' fill='%23e8b04b'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #161c26;
+      --panel-2: #1c2433;
+      --border: #2a3345;
+      --text: #e6edf3;
+      --muted: #8b98ab;
+      --accent: #e8b04b;
+      --accent-2: #d4763b;
+      --danger: #c94f4f;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 4px 20px rgba(0,0,0,.35);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --header-h: 64px;
+      --notice-h: 44px;
+      --sticky-total: calc(var(--header-h) + var(--notice-h));
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: var(--sticky-total); }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { display: block; max-width: 100%; height: auto; }
+    ul, ol { list-style: none; }
+
+    /* ---------- 吸顶公告条 ---------- */
+    .notice-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--notice-h);
+      background: linear-gradient(90deg, #3d2a0f, #2a1f0a);
+      border-bottom: 1px solid #5c4418;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 13px;
+      color: #f0d48a;
+      gap: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .notice-bar .tag {
+      background: var(--accent);
+      color: #151b2a;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      letter-spacing: .5px;
+    }
+    .notice-bar .scroll-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------- 吸顶页头 ---------- */
+    .site-header {
+      position: sticky;
+      top: var(--notice-h);
+      z-index: 99;
+      height: var(--header-h);
+      background: rgba(13,17,23,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #151b2a;
+      flex-shrink: 0;
+    }
+    .brand-text {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: .5px;
+      white-space: nowrap;
+    }
+    .brand-text .hl { color: var(--accent); }
+
+    .header-nav {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      flex: 1;
+      scrollbar-width: none;
+    }
+    .header-nav::-webkit-scrollbar { display: none; }
+    .header-nav a {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: .2s;
+    }
+    .header-nav a:hover,
+    .header-nav a.active {
+      background: var(--panel-2);
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      transition: .2s;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .btn:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #151b2a;
+    }
+    .btn-primary:hover { background: #f0c060; color: #151b2a; }
+
+    /* ---------- 首屏 ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 56px 20px 48px;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(232,176,75,.08), transparent),
+        radial-gradient(ellipse 50% 60% at 15% 70%, rgba(212,118,59,.06), transparent),
+        var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+    }
+    .hero h1 .accent { color: var(--accent); }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.8;
+      margin-bottom: 26px;
+    }
+    .hero-desc strong { color: var(--text); font-weight: 600; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-visual {
+      position: relative;
+      height: 300px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+    .hero-visual svg { width: 100%; height: 100%; display: block; }
+
+    /* ---------- 布局容器 ---------- */
+    .layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr) 280px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ---------- 左频道索引 ---------- */
+    .channel-index {
+      position: sticky;
+      top: calc(var(--sticky-total) + 20px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 0;
+      overflow: hidden;
+    }
+    .channel-index h2 {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 0 16px 10px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 6px;
+    }
+    .channel-index a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      transition: .15s;
+      border-left: 2px solid transparent;
+    }
+    .channel-index a:hover {
+      color: var(--accent);
+      background: var(--panel-2);
+      text-decoration: none;
+      border-left-color: var(--accent);
+    }
+    .channel-index a .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+    .channel-index a:hover .dot { background: var(--accent); }
+
+    /* ---------- 主内容区 ---------- */
+    .main-col { min-width: 0; }
+
+    .section {
+      margin-bottom: 40px;
+    }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-head h2::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .section-head .sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 概览 */
+    .overview-text {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      font-size: 14.5px;
+      color: #c2ccd8;
+      line-height: 1.9;
+    }
+    .overview-text p + p { margin-top: 12px; }
+    .overview-text strong { color: var(--accent); font-weight: 600; }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: .2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { border-color: #3d4a60; transform: translateY(-2px); box-shadow: var(--shadow); }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--panel-2);
+    }
+    .card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    .tag-chip {
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 20px;
+      background: rgba(232,176,75,.1);
+      color: var(--accent);
+      border: 1px solid rgba(232,176,75,.2);
+      white-space: nowrap;
+    }
+    .tag-chip.red { background: rgba(201,79,79,.12); color: #e08888; border-color: rgba(201,79,79,.25); }
+    .tag-chip.blue { background: rgba(80,140,220,.12); color: #8ab4f0; border-color: rgba(80,140,220,.25); }
+    .card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .card h3 a { color: inherit; }
+    .card h3 a:hover { color: var(--accent); text-decoration: none; }
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      color: var(--muted);
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      gap: 8px;
+    }
+    .card-meta .heat { color: var(--accent-2); font-weight: 600; }
+
+    /* 动态列表 */
+    .update-list {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .update-item {
+      display: flex;
+      gap: 14px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+      transition: .15s;
+    }
+    .update-item:last-child { border-bottom: none; }
+    .update-item:hover { background: var(--panel-2); }
+    .update-time {
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      min-width: 62px;
+      padding-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .update-content { flex: 1; min-width: 0; }
+    .update-content .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .update-content .title a { color: inherit; }
+    .update-content .title a:hover { color: var(--accent); text-decoration: none; }
+    .update-content .brief {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .badge-live {
+      font-size: 10px;
+      background: var(--danger);
+      color: #fff;
+      padding: 0 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    /* 分类入口 */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .cat-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 12px;
+      text-align: center;
+      transition: .2s;
+      display: block;
+    }
+    .cat-item:hover {
+      border-color: var(--accent);
+      background: var(--panel-2);
+      text-decoration: none;
+    }
+    .cat-item .cat-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .cat-item:hover .cat-name { color: var(--accent); }
+    .cat-item .cat-count { font-size: 11px; color: var(--muted); }
+
+    /* 深度解析 */
+    .deep-read {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+    }
+    .deep-read h3 {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 22px 0 10px;
+      color: var(--accent);
+    }
+    .deep-read h3:first-child { margin-top: 0; }
+    .deep-read p {
+      font-size: 14px;
+      color: #c2ccd8;
+      line-height: 1.9;
+      margin-bottom: 12px;
+    }
+    .deep-read ul {
+      margin: 8px 0 14px 4px;
+      padding-left: 18px;
+    }
+    .deep-read li {
+      font-size: 13.5px;
+      color: #b8c4d4;
+      line-height: 1.8;
+      margin-bottom: 6px;
+      list-style: disc;
+    }
+    .deep-read li::marker { color: var(--accent); }
+    .deep-read strong { color: var(--text); }
+
+    /* 体验指南 */
+    .guide-steps {
+      display: grid;
+      gap: 12px;
+    }
+    .guide-step {
+      display: flex;
+      gap: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(232,176,75,.12);
+      border: 1px solid rgba(232,176,75,.3);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* FAQ */
+    .faq-list { display: grid; gap: 8px; }
+    details {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    details summary {
+      padding: 13px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      transition: .15s;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::after {
+      content: '+';
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 400;
+      flex-shrink: 0;
+      transition: .2s;
+    }
+    details[open] summary::after { content: '−'; }
+    details summary:hover { background: var(--panel-2); }
+    details .faq-answer {
+      padding: 0 18px 16px;
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    details .faq-answer p { margin-bottom: 6px; }
+
+    /* 评论 */
+    .comment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .comment-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .comment-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2a3345, #1c2433);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .comment-name { font-size: 13px; font-weight: 600; }
+    .comment-date { font-size: 11px; color: var(--muted); margin-left: auto; }
+    .comment-text { font-size: 12.5px; color: #b0bcc8; line-height: 1.7; }
+    .comment-text .at { color: var(--accent); }
+
+    /* 资讯 */
+    .news-list { display: grid; gap: 12px; }
+    .news-item {
+      display: flex;
+      gap: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: .15s;
+      align-items: flex-start;
+    }
+    .news-item:hover { border-color: #3d4a60; }
+    .news-thumb {
+      width: 100px;
+      height: 70px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--panel-2);
+    }
+    .news-body { flex: 1; min-width: 0; }
+    .news-body h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .news-body h4 a { color: var(--text); }
+    .news-body h4 a:hover { color: var(--accent); text-decoration: none; }
+    .news-body .news-date { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .news-body .news-brief { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+    /* 相关推荐 */
+    .related-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .related-tags a {
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: .2s;
+    }
+    .related-tags a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--panel-2);
+      text-decoration: none;
+    }
+
+    /* 榜单 */
+    .rank-board {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .rank-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 18px;
+      border-bottom: 1px solid var(--border);
+      transition: .15s;
+    }
+    .rank-row:last-child { border-bottom: none; }
+    .rank-row:hover { background: var(--panel-2); }
+    .rank-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background: var(--panel-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .rank-row:nth-child(1) .rank-num { background: linear-gradient(135deg,#e8b04b,#d4763b); color: #151b2a; }
+    .rank-row:nth-child(2) .rank-num { background: #8b98ab; color: #151b2a; }
+    .rank-row:nth-child(3) .rank-num { background: #a0703c; color: #fff; }
+    .rank-title { flex: 1; font-size: 13.5px; font-weight: 600; min-width: 0; }
+    .rank-title a { color: var(--text); }
+    .rank-title a:hover { color: var(--accent); text-decoration: none; }
+    .rank-heat { font-size: 11.5px; color: var(--accent-2); font-weight: 600; white-space: nowrap; }
+
+    /* ---------- 右侧辅助栏 ---------- */
+    .side-col {
+      position: sticky;
+      top: calc(var(--sticky-total) + 20px);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .side-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .side-card h3 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .side-card h3::before {
+      content: '';
+      width: 3px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .side-list { display: flex; flex-direction: column; gap: 10px; }
+    .side-list li {
+      font-size: 12.5px;
+      line-height: 1.6;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .side-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .side-list a { color: #c2ccd8; }
+    .side-list a:hover { color: var(--accent); text-decoration: none; }
+    .side-list .meta { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .side-search {
+      display: flex;
+      gap: 6px;
+    }
+    .side-search input {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 10px;
+      font-size: 12.5px;
+      color: var(--text);
+      font-family: var(--font);
+      outline: none;
+    }
+    .side-search input:focus { border-color: var(--accent); }
+    .side-search input::placeholder { color: var(--muted); }
+    .side-search button {
+      padding: 7px 12px;
+      font-size: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #151b2a;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .search-feedback {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      display: none;
+    }
+    .search-feedback.show { display: block; }
+    .search-feedback strong { color: var(--accent); }
+
+    /* ---------- 页尾 ---------- */
+    .site-footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 40px 20px 24px;
+    }
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+    .footer-brand p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 10px;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .footer-col a {
+      display: block;
+      font-size: 12.5px;
+      color: var(--muted);
+      padding: 3px 0;
+      transition: .15s;
+    }
+    .footer-col a:hover { color: var(--accent); text-decoration: none; }
+    .footer-bottom {
+      max-width: 1360px;
+      margin: 28px auto 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    .footer-bottom .disclaimer { color: #5c6a7d; }
+
+    /* ---------- 响应式 ---------- */
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 160px minmax(0, 1fr);
+      }
+      .side-col {
+        grid-column: 1 / -1;
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .hero-inner { grid-template-columns: 1fr 300px; }
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { height: 220px; order: -1; }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .channel-index {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 8px;
+        gap: 4px;
+      }
+      .channel-index h2 { display: none; }
+      .channel-index a {
+        padding: 6px 12px;
+        border-radius: 20px;
+        border-left: none;
+        background: var(--panel-2);
+        font-size: 12px;
+      }
+      .channel-index a .dot { display: none; }
+      .side-col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 740px) {
+      :root { --header-h: 56px; --notice-h: 38px; }
+      body { font-size: 14px; }
+      .site-header { padding: 0 12px; gap: 10px; }
+      .brand-text { font-size: 15px; }
+      .brand-logo { width: 28px; height: 28px; font-size: 13px; }
+      .header-nav { display: none; }
+      .header-actions .btn:not(.btn-primary) { display: none; }
+      .hero { padding: 36px 14px 32px; }
+      .hero h1 { font-size: 26px; }
+      .layout { padding: 24px 14px 40px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .side-col { grid-template-columns: 1fr; }
+      .comment-grid { grid-template-columns: 1fr; }
+      .news-item { flex-direction: column; }
+      .news-thumb { width: 100%; height: 120px; }
+      .deep-read { padding: 18px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-brand p { max-width: 100%; }
+      .update-item { flex-direction: column; gap: 4px; }
+      .update-time { padding-top: 0; }
+      .rank-row { padding: 10px 14px; }
+      .overview-text { padding: 16px; }
+      .section { margin-bottom: 30px; }
+    }
+
+    @media (max-width: 380px) {
+      .cat-grid { grid-template-columns: 1fr; }
+      .brand-text { font-size: 13px; }
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 吸顶公告条 -->
+<div class="notice-bar" role="status">
+  <span class="tag">最新</span>
+  <span class="scroll-text">11 月 8 日新增 9 条大赛黑料档案 · 某平台主播赛数据争议完整记录已解封 · 本周社区爆料帖突破 340 条</span>
+</div>
+
+<!-- 吸顶页头 -->
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-logo" aria-hidden="true">黑</div>
+    <span class="brand-text">每日大赛黑料在线入口</span>
+  </div>
+  <nav class="header-nav" aria-label="主题导航">
+    <a href="/#overview" class="active">领域概览</a>
+    <a href="/#featured">精选档案</a>
+    <a href="/#updates">最新动态</a>
+    <a href="/#categories">分类索引</a>
+    <a href="/#deep-read">深度解析</a>
+    <a href="/#faq">常见问答</a>
+    <a href="/#comments">社区评论</a>
+  </nav>
+  <div class="header-actions">
+    <a href="/#updates" class="btn">今日更新</a>
+    <a href="/#featured" class="btn btn-primary">浏览档案</a>
+  </div>
+</header>
+
+<!-- 首屏 -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">赛事争议 · 社区爆料 · 档案追踪</div>
+      <h1>每日大赛黑料在线入口</h1>
+      <p class="hero-desc">
+        汇集网络赛事中的<strong>争议判罚、选手违规、数据异常与社区爆料</strong>，以档案形式整理主播赛、平台挑战赛、线下竞速赛等场景的公开讨论。从初赛刷票疑云到决赛选手设备争议，每条记录附带时间线、关键证据摘要与社区多方观点，帮助关注赛事内幕的网友快速定位具体事件。
+      </p>
+      <div class="hero-actions">
+        <a href="/#featured" class="btn btn-primary">查看精选黑料档案</a>
+        <a href="/#updates" class="btn">今日最新爆料</a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="赛事争议档案视觉图">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1c2433"/>
+            <stop offset="100%" stop-color="#0d1117"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e8b04b" stop-opacity=".8"/>
+            <stop offset="100%" stop-color="#d4763b" stop-opacity=".3"/>
+          </linearGradient>
+        </defs>
+        <rect width="380" height="300" fill="url(#g1)"/>
+        <g opacity=".08" stroke="#e8b04b" stroke-width="1">
+          <line x1="0" y1="60" x2="380" y2="60"/>
+          <line x1="0" y1="120" x2="380" y2="120"/>
+          <line x1="0" y1="180" x2="380" y2="180"/>
+          <line x1="0" y1="240" x2="380" y2="240"/>
+          <line x1="60" y1="0" x2="60" y2="300"/>
+          <line x1="130" y1="0" x2="130" y2="300"/>
+          <line x1="200" y1="0" x2="200" y2="300"/>
+          <line x1="270" y1="0" x2="270" y2="300"/>
+          <line x1="340" y1="0" x2="340" y2="300"/>
+        </g>
+        <rect x="40" y="50" width="180" height="14" rx="4" fill="#2a3345"/>
+        <rect x="40" y="74" width="120" height="8" rx="3" fill="#2a3345" opacity=".6"/>
+        <rect x="40" y="100" width="300" height="2" rx="1" fill="url(#g2)"/>
+        <g transform="translate(40,120)">
+          <rect width="90" height="60" rx="6" fill="#1c2433" stroke="#2a3345"/>
+          <rect x="10" y="12" width="50" height="6" rx="2" fill="#e8b04b" opacity=".6"/>
+          <rect x="10" y="24" width="70" height="4" rx="2" fill="#2a3345"/>
+          <rect x="10" y="34" width="40" height="4" rx="2" fill="#2a3345"/>
+        </g>
+        <g transform="translate(150,120)">
+          <rect width="90" height="60" rx="6" fill="#1c2433" stroke="#2a3345"/>
+          <circle cx="45" cy="30" r="16" fill="none" stroke="#e8b04b" stroke-width="2" opacity=".5"/>
+          <path d="M38 30l5 5 10-10" stroke="#e8b04b" stroke-width="2" fill="none" opacity=".7"/>
+        </g>
+        <g transform="translate(260,120)">
+          <rect width="90" height="60" rx="6" fill="#1c2433" stroke="#2a3345"/>
+          <rect x="10" y="12" width="30" height="30" rx="3" fill="#c94f4f" opacity=".25"/>
+          <rect x="48" y="12" width="32" height="6" rx="2" fill="#2a3345"/>
+          <rect x="48" y="24" width="24" height="4" rx="2" fill="#2a3345"/>
+          <rect x="48" y="34" width="28" height="4" rx="2" fill="#2a3345"/>
+        </g>
+        <g transform="translate(40,200)">
+          <rect width="310" height="70" rx="6" fill="#1c2433" stroke="#2a3345"/>
+          <rect x="14" y="14" width="60" height="8" rx="3" fill="#e8b04b" opacity=".5"/>
+          <rect x="14" y="30" width="200" height="4" rx="2" fill="#2a3345"/>
+          <rect x="14" y="40" width="160" height="4" rx="2" fill="#2a3345"/>
+          <rect x="14" y="50" width="120" height="4" rx="2" fill="#2a3345"/>
+          <circle cx="280" cy="35" r="14" fill="none" stroke="#d4763b" stroke-width="1.5" opacity=".5"/>
+          <text x="280" y="40" text-anchor="middle" fill="#d4763b" font-size="12" font-weight="bold" opacity=".7">!</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 主布局 -->
+<div class="layout">
+
+  <!-- 左频道索引 -->
+  <aside class="channel-index" aria-label="频道索引">
+    <h2>频道索引</h2>
+    <a href="/#overview"><span class="dot"></span>领域概览</a>
+    <a href="/#featured"><span class="dot"></span>精选档案</a>
+    <a href="/#updates"><span class="dot"></span>最新动态</a>
+    <a href="/#categories"><span class="dot"></span>分类索引</a>
+    <a href="/#deep-read"><span class="dot"></span>深度解析</a>
+    <a href="/#guide"><span class="dot"></span>体验指南</a>
+    <a href="/#faq"><span class="dot"></span>常见问答</a>
+    <a href="/#comments"><span class="dot"></span>社区评论</a>
+    <a href="/#news"><span class="dot"></span>相关资讯</a>
+    <a href="/#related"><span class="dot"></span>延伸推荐</a>
+    <a href="/#ranking"><span class="dot"></span>黑料榜单</a>
+  </aside>
+
+  <!-- 主内容区 -->
+  <main class="main-col">
+
+    <!-- 1. 领域概览 -->
+    <section class="section" id="overview">
+      <div class="section-head">
+        <h2>赛事争议与黑料档案概览</h2>
+        <span class="sub">2026 年 11 月更新</span>
+      </div>
+      <div class="overview-text">
+        <p><strong>网络赛事黑料</strong>通常指在各类线上竞技、平台挑战赛、主播邀请赛及线下竞速赛中产生的争议事件记录。按类型可划分为<strong>判罚争议</strong>（如裁判判定标准不一、回放审核缺失）、<strong>选手行为问题</strong>（设备违规、代打嫌疑、赛后言论冲突）、<strong>数据异常</strong>（票数短时间激增、成绩曲线反常）以及<strong>组织方执行瑕疵</strong>（赛程临时变更、奖金发放延迟）四大方向。</p>
+        <p>当前社区讨论热度较高的具体赛事包括：<strong>星火平台秋季主播挑战赛</strong>的八强赛数据争议、<strong>极速杯线上竞速赛</strong>的设备检测风波、<strong>巅峰对决邀请赛</strong>的裁判评分公示问题，以及<strong>新秀选拔赛</strong>的投票机制质疑。这些事件在 2026 年 10 月至 11 月间持续发酵，衍生出大量档案整理与证据分析帖。</p>
+        <p>关注此类内容的访问者通常希望快速定位三类信息：<strong>事件时间线梳理</strong>、<strong>关键证据与原始记录</strong>、<strong>社区多方观点对照</strong>。本聚合页围绕这三个需求组织内容，覆盖主播赛、平台挑战赛、线下竞速赛、投票类选拔赛等主要赛事形态。</p>
+      </div>
+    </section>
+
+    <!-- 2. 精选内容推荐 -->
+    <section class="section" id="featured">
+      <div class="section-head">
+        <h2>精选黑料档案推荐</h2>
+        <span class="sub">近期关注度较高的 8 个具体事件记录</span>
+      </div>
+      <div class="card-grid">
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/dasai-hl01/400/300" alt="星火平台秋季主播挑战赛八强赛数据争议档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip red">数据争议</span>
+              <span class="tag-chip">主播赛</span>
+              <span class="tag-chip blue">八强赛</span>
+            </div>
+            <h3><a href="/#deep-read">星火平台秋季主播挑战赛八强赛票数异常记录</a></h3>
+            <p class="card-desc">八强赛第三组投票时段内出现 12 分钟内票数增长 1.8 万的情况，社区整理了平台公示数据与截屏对照，包含选手 ID、时间戳与增长曲线。</p>
+            <div class="card-meta">
+              <span>更新：11-07</span>
+              <span class="heat">热度 9.4</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/jisubei-hl02/400/300" alt="极速杯线上竞速赛设备检测争议档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip red">设备违规</span>
+              <span class="tag-chip">竞速赛</span>
+              <span class="tag-chip blue">决赛</span>
+            </div>
+            <h3><a href="/#deep-read">极速杯线上竞速赛决赛选手外设检测争议</a></h3>
+            <p class="card-desc">决赛第二局后对手提出设备检测申请，赛事方在 40 分钟后才完成复核。档案收录了检测流程截图、选手赛后直播表述与官方公告原文。</p>
+            <div class="card-meta">
+              <span>更新：11-06</span>
+              <span class="heat">热度 9.1</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/dianfeng-hl03/400/300" alt="巅峰对决邀请赛裁判评分公示问题档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip">判罚争议</span>
+              <span class="tag-chip red">评分公示</span>
+              <span class="tag-chip blue">邀请赛</span>
+            </div>
+            <h3><a href="/#deep-read">巅峰对决邀请赛半决赛裁判评分公示争议</a></h3>
+            <p class="card-desc">半决赛第三场结束后，裁判组未按规则在 30 分钟内公示评分表，延迟约 2 小时才发布。档案整理了规则原文、实际发布时间线及选手申诉记录。</p>
+            <div class="card-meta">
+              <span>更新：11-05</span>
+              <span class="heat">热度 8.7</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/xinxiu-hl04/400/300" alt="新秀选拔赛投票机制质疑档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip red">投票机制</span>
+              <span class="tag-chip">选拔赛</span>
+              <span class="tag-chip blue">新秀</span>
+            </div>
+            <h3><a href="/#deep-read">新秀选拔赛复活投票机制质疑与数据整理</a></h3>
+            <p class="card-desc">复活赛段采用“每日投票 + 评委加权”规则，但加权公式未在赛前完整公示。档案汇总了 11 月 1 日至 5 日的每日票数变化与最终排名差异。</p>
+            <div class="card-meta">
+              <span>更新：11-04</span>
+              <span class="heat">热度 8.5</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/hangye-hl05/400/300" alt="主播邀请赛赛后言论冲突档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip">言论冲突</span>
+              <span class="tag-chip">主播赛</span>
+              <span class="tag-chip blue">赛后直播</span>
+            </div>
+            <h3><a href="/#deep-read">主播邀请赛四强赛后直播言论冲突记录</a></h3>
+            <p class="card-desc">四强赛淘汰方主播在赛后直播中对裁判判罚表达不满，引发双方粉丝社区争论。档案收录了直播回放关键片段的时间戳与文字转录。</p>
+            <div class="card-meta">
+              <span>更新：11-03</span>
+              <span class="heat">热度 8.2</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/saishi-hl06/400/300" alt="线下竞速赛赛程临时变更档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip">赛程变更</span>
+              <span class="tag-chip">线下赛</span>
+              <span class="tag-chip blue">竞速</span>
+            </div>
+            <h3><a href="/#deep-read">城市线下竞速赛赛程临时调整与选手通知缺失</a></h3>
+            <p class="card-desc">原定 10 月 28 日下午的淘汰赛提前 2 小时举行，部分选手未收到通知。档案整理了赛事群聊记录、现场签到表与受影响选手名单。</p>
+            <div class="card-meta">
+              <span>更新：11-02</span>
+              <span class="heat">热度 7.9</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/jijin-hl07/400/300" alt="平台挑战赛奖金发放延迟档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip red">奖金延迟</span>
+              <span class="tag-chip">挑战赛</span>
+              <span class="tag-chip blue">执行问题</span>
+            </div>
+            <h3><a href="/#deep-read">平台挑战赛奖金发放延迟与选手联合声明</a></h3>
+            <p class="card-desc">原定赛后 15 个工作日内发放的奖金延迟至第 28 个工作日仍未到账，8 名选手发布联合声明。档案收录了声明全文、平台客服回复与后续处理进展。</p>
+            <div class="card-meta">
+              <span>更新：11-01</span>
+              <span class="heat">热度 7.6</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <img class="card-img" src="https://picsum.photos/seed/daida-hl08/400/300" alt="新星赛代打嫌疑聊天记录档案封面" width="400" height="300" loading="lazy">
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag-chip red">代打嫌疑</span>
+              <span class="tag-chip">新星赛</span>
+              <span class="tag-chip blue">聊天记录</span>
+            </div>
+            <h3><a href="/#deep-read">新星赛十六强选手代打嫌疑聊天记录整理</a></h3>
+            <p class="card-desc">社区用户整理出十六强某选手赛前与第三方的聊天记录截图，显示可能存在账号共享行为。档案按时间顺序排列截图并标注关键对话节点。</p>
+            <div class="card-meta">
+              <span>更新：10-30</span>
+              <span class="heat">热度 7.4</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 3. 最新动态 -->
+    <section class="section" id="updates">
+      <div class="section-head">
+        <h2>最新黑料动态与更新</h2>
+        <span class="sub">11 月 8 日当天及近期条目</span>
+      </div>
+      <div class="update-list">
+        <div class="update-item">
+          <span class="update-time">今天 09:30</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">星火平台八强赛票数异常档案更新第 4 版</a></div>
+            <div class="brief">新增 11 月 6 日平台数据导出记录与第三方统计对比图，修正了此前票数增长率计算口径。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">今天 08:15</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">极速杯设备检测争议：赛事方发布补充说明</a></div>
+            <div class="brief">官方于今日上午发布 800 字补充公告，说明检测流程时间线，档案已同步收录公告全文。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">昨天 21:10</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">巅峰对决评分公示争议：裁判组回应帖引发新讨论</a></div>
+            <div class="brief">裁判组在社区发布回应帖，解释延迟原因为“评分系统临时故障”，部分选手表示不认可该说法。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">昨天 17:40</span>
+          <div class="update-content">
+            <div class="title"><a href="/#updates">新秀选拔赛复活投票数据完整版解封</a></div>
+            <div class="brief">此前仅公开每日总票数，11 月 7 日下午平台开放了分时段投票明细下载，档案已更新。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11 月 6 日</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">主播邀请赛言论冲突：双方主播发布联合声明</a></div>
+            <div class="brief">两位当事主播于 11 月 6 日晚间发布联合声明，表示争议已私下沟通解决，相关录播片段仍保留在档案中。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11 月 5 日</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">城市线下竞速赛受影响选手收到补赛通知</a></div>
+            <div class="brief">赛事方于 11 月 5 日通知 6 名受影响选手安排补赛，补赛时间定于 11 月 15 日，档案已记录处理进展。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11 月 4 日</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">平台挑战赛奖金延迟：首批款项已到账</a></div>
+            <div class="brief">8 名选手中已有 5 人确认收到奖金，剩余 3 人仍在等待，联合声明发起人更新了到账情况。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11 月 3 日</span>
+          <div class="update-content">
+            <div class="title"><a href="/#featured">新星赛代打嫌疑：涉事选手提交自证材料</a></div>
+            <div class="brief">涉事选手于 11 月 3 日向赛事方提交账号登录日志与设备指纹信息，赛事方表示将在一周内公布调查结论。</div>
+          </div>
+        </div>
+        <div class="update-item">
+          <span class="update-time">11 月 2 日</span>
+          <div class="update-content">
+            <div class="title"><a href="/#ranking">黑料档案周榜更新：八强赛票数争议升至第一</a></div>
+            <div class="brief">本周榜单根据档案访问量、评论数与社区转发量综合排序，票数异常档案首次登顶。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 分类入口 -->
+    <section class="section" id="categories">
+      <div class="section-head">
+        <h2>黑料类型分类索引</h2>
+        <span class="sub">按争议性质划分的 8 个具体类别</span>
+      </div>
+      <div class="cat-grid">
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">判罚争议</div>
+          <div class="cat-count">23 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">数据异常</div>
+          <div class="cat-count">17 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">设备违规</div>
+          <div class="cat-count">11 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">代打嫌疑</div>
+          <div class="cat-count">9 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">投票机制</div>
+          <div class="cat-count">14 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">赛程变更</div>
+          <div class="cat-count">8 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">奖金延迟</div>
+          <div class="cat-count">6 条档案</div>
+        </a>
+        <a href="/#featured" class="cat-item">
+          <div class="cat-name">言论冲突</div>
+          <div class="cat-count">19 条档案</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. 深度解析 -->
+    <section class="section" id="deep-read">
+      <div class="section-head">
+        <h2>深度解析：如何看懂一场赛事争议</h2>
+        <span class="sub">以具体案例拆解争议类型与判断维度</span>
+      </div>
+      <div class="deep-read">
+        <h3>判罚争议的核心：规则原文与执行时间线</h3>
+        <p>判罚类黑料最常出现在<strong>评分制赛事</strong>与<strong>对抗性竞技</strong>中。以巅峰对决邀请赛半决赛为例，争议焦点并非裁判打分高低，而是<strong>评分公示时间</strong>与规则承诺不符——规则写明“赛后 30 分钟内公示”，实际延迟约 2 小时。判断这类事件是否成立，需要对照三个材料：赛事规则原文中关于公示时间的条款、实际发布时间戳、以及裁判组事后解释。如果规则原文模糊（如仅写“尽快公示”），则争议更多停留在执行层面而非违规层面。</p>
+        <p>另一类判罚争议涉及<strong>回放审核缺失</strong>。极速杯决赛中，选手提出设备检测申请后，赛事方在 40 分钟后才启动复核流程，期间比赛继续进行。这类事件的关键证据是<strong>申请记录的时间戳</strong>与<strong>复核启动的时间戳</strong>之间的间隔，以及规则中是否规定了申请后的暂停义务。</p>
+
+        <h3>数据异常类：票数曲线与时间窗口的对照方法</h3>
+        <p>票数异常是<strong>投票类选拔赛</strong>中最常见的黑料类型。星火平台八强赛的案例中，社区关注的核心数据点是：第三组投票在 12 分钟窗口内增长 1.8 万票，而此前同组平均增速为每小时 2000 票左右。分析这类事件通常看三个指标：</p>
+        <ul>
+          <li><strong>增速突变倍数</strong>：异常窗口的票数增速与前后时段的比值。该案例中比值约为 45 倍。</li>
+          <li><strong>票源集中度</strong>：是否集中在少数账号或单一 IP 段。平台公示数据中通常包含脱敏后的账号分布。</li>
+          <li><strong>与选手拉票活动的重合度</strong>：如果选手在同期进行了公开拉票（如直播呼吁、社群红包），增速上升可能有合理解释。该案例中选手直播时段与异常窗口不重合。</li>
+        </ul>
+
+        <h3>设备违规与代打嫌疑：证据链的完整度差异</h3>
+        <p>设备违规类争议通常由对手提出检测申请触发，证据以<strong>赛事方检测报告</strong>和<strong>现场录像</strong>为主。极速杯案例中，检测报告显示外设型号与申报一致，但检测流程耗时过长本身成为新的争议点——这属于“程序瑕疵”而非“实体违规”。</p>
+        <p>代打嫌疑则更依赖<strong>聊天记录、账号登录日志与设备指纹</strong>三类证据。新星赛十六强案例中，社区整理出的聊天记录截图虽然指向账号共享，但截图存在拼接可能，证据效力低于赛事方后台日志。判断此类档案的可信度，应优先看是否有<strong>平台官方调查结论</strong>或<strong>选手自证材料</strong>，其次才参考社区截图。</p>
+
+        <h3>组织方执行问题：赛程变更与奖金延迟的维权路径</h3>
+        <p>赛程临时变更和奖金延迟属于<strong>执行类争议</strong>，通常不涉及竞技公平，但直接影响选手权益。城市线下竞速赛的赛程提前事件中，关键事实是通知渠道是否覆盖全部选手——档案中的群聊记录显示通知仅发在其中一个选手群，另一群未同步。这类事件的判断标准相对清晰：<strong>规则中约定的通知方式是否被完整执行</strong>。</p>
+        <p>奖金延迟类事件则需对照赛事报名页面或规则中关于发放周期的承诺。平台挑战赛案例中，规则写的是“赛后 15 个工作日内”，实际到第 28 个工作日仍未完全到账，明显超出承诺周期。选手联合声明的作用在于集体留痕，为后续协商提供依据。</p>
+      </div>
+    </section>
+
+    <!-- 6. 体验指南 -->
+    <section class="section" id="guide">
+      <div class="section-head">
+        <h2>黑料档案的阅读与判断路径</h2>
+        <span class="sub">从事件定位到证据核对的四个步骤</span>
+      </div>
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>先确认事件类型与时间窗口</h4>
+            <p>拿到一个具体条目名后，先看档案标注的类型（判罚、数据、设备、代打、执行）和发生日期。同一赛事不同阶段的争议往往有关联，比如星火平台八强赛的票数争议与后续复活赛投票机制质疑属于同一体系下的连续事件。</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>核对规则原文与时间戳</h4>
+            <p>绝大多数争议的成立与否取决于“规则怎么写的”和“实际怎么执行的”。优先阅读档案中收录的规则原文截图或转录，再对照事件时间线。如果档案只有社区讨论而缺少原始规则或时间戳，可信度应下调。</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>区分官方结论与社区推测</h4>
+            <p>档案中通常混合了平台公告、选手声明、社区截图和匿名爆料。阅读时按来源分层：官方调查结论 > 选手自证材料 > 多方交叉验证的截图 > 单一匿名帖。代打类争议尤其需要区分“聊天记录截图”和“后台登录日志”的证据效力。</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>比较同类事件的处理结果</h4>
+            <p>判断一个争议是否“严重”，可以参考同类事件的历史处理。例如设备检测延迟在极速杯案例中引发了规则修订讨论，而类似的延迟在更早的赛事中可能未被追究。横向对比同类档案，能更准确地理解赛事方的执行标准变化。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FAQ -->
+    <section class="section" id="faq">
+      <div class="section-head">
+        <h2>常见问答</h2>
+        <span class="sub">关于赛事黑料档案的 6 个具体问题</span>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>星火平台八强赛的票数争议，平台最终给了什么结论？</summary>
+          <div class="faq-answer">
+            <p>截至 11 月 8 日，平台尚未发布正式的调查结论。11 月 6 日平台在社区回复中表示“已收到反馈，正在核对后台数据”，但未公布具体时间表。档案中保留的投票数据导出记录是社区自行整理的对照材料，并非平台官方发布。</p>
+          </div>
+        </details>
+        <details>
+          <summary>极速杯的设备检测争议和代打嫌疑有什么本质区别？</summary>
+          <div class="faq-answer">
+            <p>设备检测争议针对的是<strong>外设是否符合赛事规则</strong>，极速杯案例中检测结果本身显示外设合规，争议点在于检测流程耗时过长；代打嫌疑针对的是<strong>操作者身份是否与报名选手一致</strong>，需要登录日志、设备指纹等证据。两者证据类型和判断标准不同，不能混为一谈。</p>
+          </div>
+        </details>
+        <details>
+          <summary>第一次看这类黑料档案，从哪个事件开始看比较好？</summary>
+          <div class="faq-answer">
+            <p>建议从<strong>巅峰对决邀请赛评分公示争议</strong>开始。该事件规则条文清晰（30 分钟内公示），实际延迟时间有明确记录（约 2 小时），裁判组也给出了公开解释，适合作为理解“规则执行类争议”的入门案例。之后再看数据异常类（星火平台八强赛）和证据链较复杂的代打类（新星赛十六强），逐步建立判断框架。</p>
+          </div>
+        </details>
+        <details>
+          <summary>社区整理的聊天记录截图，可信度怎么判断？</summary>
+          <div class="faq-answer">
+            <p>优先看截图是否包含<strong>连续的时间戳、完整的对话上下文和未打码的账号信息</strong>。拼接痕迹明显、关键信息打码过多、只有单一来源的截图，可信度较低。新星赛代打嫌疑档案中，社区标注了“截图存在拼接可能”，并同时收录了选手提交的自证材料，阅读时应以后者为主要参考。</p>
+          </div>
+        </details>
+        <details>
+          <summary>赛事方临时变更赛程，选手一般能争取到什么补偿？</summary>
+          <div class="faq-answer">
+            <p>取决于规则中是否约定了变更通知义务。城市线下竞速赛案例中，受影响选手最终获得了补赛安排（11 月 15 日），但交通与住宿成本未获补偿。同类事件中，如果规则明确写了“提前 24 小时通知”，而实际未执行，选手联合主张补赛或退费的依据会更充分。</p>
+          </div>
+        </details>
+        <details>
+          <summary>奖金延迟发放类事件，多久算“超出合理范围”？</summary>
+          <div class="faq-answer">
+            <p>直接依据是赛事规则或报名页面写明的发放周期。平台挑战赛案例中规则写“赛后 15 个工作日内”，实际到第 28 个工作日仍未完全到账，已明显超出承诺。如果规则未写具体周期，通常以行业惯例（多数平台为 30 个工作日内）作为参考，但约束力较弱。</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 8. 用户评论 -->
+    <section class="section" id="comments">
+      <div class="section-head">
+        <h2>社区评论</h2>
+        <span class="sub">来自关注者的 14 条具体讨论</span>
+      </div>
+      <div class="comment-grid">
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">阿</div>
+            <span class="comment-name">阿柴不熬夜</span>
+            <span class="comment-date">今天 10:02</span>
+          </div>
+          <p class="comment-text">星火八强赛那个票数曲线我对着看了半天，12 分钟涨 1.8 万确实离谱，但档案里也写了平台数据是脱敏的，不好直接下定论。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">路</div>
+            <span class="comment-name">路过的键盘侠</span>
+            <span class="comment-date">今天 09:18</span>
+          </div>
+          <p class="comment-text">极速杯设备检测拖了 40 分钟才复核，这期间比赛还在打，程序上肯定有问题。不过检测结果本身没问题，所以算程序瑕疵。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">小</div>
+            <span class="comment-name">小满不是满</span>
+            <span class="comment-date">昨天 22:41</span>
+          </div>
+          <p class="comment-text">巅峰对决的评分公示延迟我现场看了，确实过了快两小时才出表。裁判组说系统故障，但没给故障日志，这个说法有点站不住。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">白</div>
+            <span class="comment-name">白开水加冰</span>
+            <span class="comment-date">昨天 20:33</span>
+          </div>
+          <p class="comment-text">新秀选拔赛那个加权公式，赛前确实没看到完整版。不过复活赛本来就有评委权重，这点老观众应该都知道。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">老</div>
+            <span class="comment-name">老猫烧须</span>
+            <span class="comment-date">11 月 7 日</span>
+          </div>
+          <p class="comment-text">代打那个聊天记录我看了原帖，拼接痕迹很明显，中间有两段字体都不一样。选手自证日志反而更可信一些。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">蓝</div>
+            <span class="comment-name">蓝莓夜航</span>
+            <span class="comment-date">11 月 7 日</span>
+          </div>
+          <p class="comment-text">线下赛提前两小时这个真的坑，我朋友就是选手，说群里根本没发通知，到了现场才发现已经开打了。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">一</div>
+            <span class="comment-name">一只小橘</span>
+            <span class="comment-date">11 月 6 日</span>
+          </div>
+          <p class="comment-text">奖金延迟那个联合声明写得挺克制的，就事论事列了时间线，比一些带节奏的帖子强多了。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">深</div>
+            <span class="comment-name">深水炸弹</span>
+            <span class="comment-date">11 月 6 日</span>
+          </div>
+          <p class="comment-text">主播赛赛后言论那个，其实两边都有点上头。录播我看了，淘汰方主播语气确实冲，但对方粉丝先刷屏也有责任。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">数</div>
+            <span class="comment-name">数据分析猫</span>
+            <span class="comment-date">11 月 5 日</span>
+          </div>
+          <p class="comment-text">票数增速 45 倍这个比值，如果没有拉票活动重合，确实很难用自然增长解释。不过平台后台有没有机器人票，只有平台自己能查。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">柠</div>
+            <span class="comment-name">柠檬海盐</span>
+            <span class="comment-date">11 月 5 日</span>
+          </div>
+          <p class="comment-text">设备检测流程我也遇到过，之前打线上赛申请检测等了半小时，裁判说在调录像。感觉这个流程本身就需要优化，不能全怪选手。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">半</div>
+            <span class="comment-name">半糖去冰</span>
+            <span class="comment-date">11 月 4 日</span>
+          </div>
+          <p class="comment-text">裁判组回应帖下面吵了三百多层，其实核心就一个问题：评分系统故障有没有日志。有日志就是真故障，没日志就是托词。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">夜</div>
+            <span class="comment-name">夜航星</span>
+            <span class="comment-date">11 月 3 日</span>
+          </div>
+          <p class="comment-text">新星赛代打那个选手提交的登录日志，IP 地址在三个城市切换，这个确实有点奇怪。等官方调查结论吧，现在下结论太早。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">刷</div>
+            <span class="comment-name">刷子退散</span>
+            <span class="comment-date">11 月 2 日</span>
+          </div>
+          <p class="comment-text">星火平台到现在没给正式结论，感觉是想拖到热度过去。不过档案一直在更新，至少信息没断。</p>
+        </div>
+
+        <div class="comment-card">
+          <div class="comment-head">
+            <div class="avatar">慢</div>
+            <span class="comment-name">慢速快门</span>
+            <span class="comment-date">11 月 1 日</span>
+          </div>
+          <p class="comment-text">奖金延迟到账那批，我关注的选手昨天收到钱了。联合声明里说剩余三人还在等，希望月底前能全部解决吧。</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 9. 相关资讯 -->
+    <section class="section" id="news">
+      <div class="section-head">
+        <h2>赛事黑料相关资讯</h2>
+        <span class="sub">6 条近期动态</span>
+      </div>
+      <div class="news-list">
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/xinxi-hl01/600/400" alt="星火平台数据导出记录新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">星火平台开放八强赛投票数据下载，社区连夜整理对比表</a></h4>
+            <div class="news-date">2026-11-07</div>
+            <p class="news-brief">平台于 11 月 7 日 15:00 开放脱敏投票数据下载，多个社区小组在当天晚间完成了与截屏数据的交叉比对，发现异常窗口的账号分布特征与日常时段存在差异。</p>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/jisubei-hl02/600/400" alt="极速杯赛事方补充公告新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">极速杯赛事方发布设备检测补充说明，承诺优化流程</a></h4>
+            <div class="news-date">2026-11-08</div>
+            <p class="news-brief">赛事方在 11 月 8 日上午发布 800 字公告，详细说明了决赛设备检测的时间线，并承诺在下一赛季将复核等待时间压缩至 15 分钟以内，同时增加备用检测通道。</p>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/dianfeng-hl03/600/400" alt="巅峰对决裁判组回应帖新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">巅峰对决裁判组回应评分公示延迟：系统故障，非人为拖延</a></h4>
+            <div class="news-date">2026-11-06</div>
+            <p class="news-brief">裁判组于 11 月 6 日晚间在赛事社区发布回应帖，称延迟原因为评分系统临时故障，并附上了故障时段的系统日志截图。部分选手在评论区表示日志不完整，要求提供更详细的技术报告。</p>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/xinxiu-hl04/600/400" alt="新秀选拔赛投票明细解封新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">新秀选拔赛复活投票分时段明细解封，加权公式仍未完整公开</a></h4>
+            <div class="news-date">2026-11-05</div>
+            <p class="news-brief">平台于 11 月 5 日开放了复活赛段的分时段投票明细，但评委加权公式的具体参数仍未在规则页公示。社区已根据明细数据反推出部分加权区间，与最终排名进行对照。</p>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/bujiang-hl07/600/400" alt="平台挑战赛奖金到账新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">平台挑战赛奖金首批到账，8 名选手中 5 人确认收到</a></h4>
+            <div class="news-date">2026-11-04</div>
+            <p class="news-brief">截至 11 月 4 日晚间，参与联合声明的 8 名选手中已有 5 人确认收到奖金，剩余 3 人表示仍在等待。平台客服回复称“分批处理中”，未给出剩余款项的具体时间表。</p>
+          </div>
+        </article>
+
+        <article class="news-item">
+          <img class="news-thumb" src="https://picsum.photos/seed/xianxia-hl06/600/400" alt="线下竞速赛补赛安排新闻配图" width="100" height="70" loading="lazy">
+          <div class="news-body">
+            <h4><a href="/#featured">城市线下竞速赛补赛定于 11 月 15 日，6 名受影响选手获参赛资格</a></h4>
+            <div class="news-date">2026-11-03</div>
+            <p class="news-brief">赛事方于 11 月 3 日向 6 名受影响选手发出补赛通知，补赛定于 11 月 15 日下午举行，赛制与原淘汰赛保持一致。选手交通与住宿成本未在通知中提及补偿方案。</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 10. 相关推荐 -->
+    <section class="section" id="related">
+      <div class="section-head">
+        <h2>延伸方向与相关条目</h2>
+        <span class="sub">8 个可继续查阅的具体方向</span>
+      </div>
+      <div class="related-tags">
+        <a href="/#featured">投票异常增速判断方法</a>
+        <a href="/#featured">设备检测流程对比</a>
+        <a href="/#featured">代打证据链分级</a>
+        <a href="/#featured">评分公示规则原文汇编</a>
+        <a href="/#featured">赛程变更通知义务</a>
+        <a href="/#featured">奖金发放周期参考</a>
+        <a href="/#featured">主播赛言论冲突记录</a>
+        <a href="/#featured">线下赛现场签到档案</a>
+      </div>
+    </section>
+
+    <!-- 11. 热门榜单 -->
+    <section class="section" id="ranking">
+      <div class="section-head">
+        <h2>黑料档案热度榜单</h2>
+        <span class="sub">按本周访问量与讨论量综合排序</span>
+      </div>
+      <div class="rank-board">
+        <div class="rank-row">
+          <span class="rank-num">1</span>
+          <span class="rank-title"><a href="/#featured">星火平台八强赛票数异常记录</a></span>
+          <span class="rank-heat">9.4</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">2</span>
+          <span class="rank-title"><a href="/#featured">极速杯决赛设备检测争议</a></span>
+          <span class="rank-heat">9.1</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">3</span>
+          <span class="rank-title"><a href="/#featured">巅峰对决评分公示延迟</a></span>
+          <span class="rank-heat">8.7</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">4</span>
+          <span class="rank-title"><a href="/#featured">新秀选拔赛复活投票机制质疑</a></span>
+          <span class="rank-heat">8.5</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">5</span>
+          <span class="rank-title"><a href="/#featured">主播邀请赛赛后言论冲突</a></span>
+          <span class="rank-heat">8.2</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">6</span>
+          <span class="rank-title"><a href="/#featured">城市线下竞速赛赛程变更</a></span>
+          <span class="rank-heat">7.9</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">7</span>
+          <span class="rank-title"><a href="/#featured">平台挑战赛奖金延迟发放</a></span>
+          <span class="rank-heat">7.6</span>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">8</span>
+          <span class="rank-title"><a href="/#featured">新星赛十六强代打嫌疑</a></span>
+          <span class="rank-heat">7.4</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 右侧辅助栏 -->
+  <aside class="side-col" aria-label="辅助信息">
+
+    <div class="side-card">
+      <h3>档案速查</h3>
+      <div class="side-search">
+        <input type="text" id="archiveSearch" placeholder="输入条目关键词" aria-label="搜索档案条目">
+        <button type="button" id="searchBtn">查找</button>
+      </div>
+      <div class="search-feedback" id="searchFeedback"></div>
+    </div>
+
+    <div class="side-card">
+      <h3>今日更新条目</h3>
+      <ul class="side-list">
+        <li><a href="/#featured">星火平台八强赛票数异常档案 v4</a><span class="meta">今天 09:30 · 数据修正</span></li>
+        <li><a href="/#featured">极速杯设备检测补充公告全文</a><span class="meta">今天 08:15 · 官方回应</span></li>
+        <li><a href="/#updates">新秀选拔赛复活投票明细</a><span class="meta">昨天 17:40 · 数据解封</span></li>
+        <li><a href="/#featured">主播邀请赛联合声明收录</a><span class="meta">11-06 · 事件进展</span></li>
+      </ul>
+    </div>
+
+    <div class="side-card">
+      <h3>高频搜索词</h3>
+      <div class="related-tags">
+        <a href="/#featured">票数异常</a>
+        <a href="/#featured">设备检测</a>
+        <a href="/#featured">评分公示</a>
+        <a href="/#featured">代打证据</a>
+        <a href="/#featured">奖金延迟</a>
+        <a href="/#featured">赛程变更</a>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <h3>近期新增档案</h3>
+      <ul class="side-list">
+        <li><a href="/#featured">新星赛十六强代打嫌疑聊天记录</a><span class="meta">10-30 新增 · 9 条截图</span></li>
+        <li><a href="/#featured">城市竞速赛现场签到表对照</a><span class="meta">10-29 新增 · 6 名选手</span></li>
+        <li><a href="/#featured">平台挑战赛客服回复全文</a><span class="meta">10-28 新增 · 4 次沟通记录</span></li>
+      </ul>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- 页尾 -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand" style="margin-bottom:4px;">
+        <div class="brand-logo" aria-hidden="true">黑</div>
+        <span class="brand-text">每日大赛黑料在线入口</span>
+      </div>
+      <p>聚焦网络赛事争议事件与社区爆料档案，覆盖主播赛、平台挑战赛、线下竞速赛等场景的判罚、数据、设备与执行问题记录。</p>
+    </div>
+    <div class="footer-col">
+      <h4>档案分类</h4>
+      <a href="/#categories">判罚争议</a>
+      <a href="/#categories">数据异常</a>
+      <a href="/#categories">设备违规</a>
+      <a href="/#categories">代打嫌疑</a>
+    </div>
+    <div class="footer-col">
+      <h4>内容板块</h4>
+      <a href="/#featured">精选档案</a>
+      <a href="/#updates">最新动态</a>
+      <a href="/#deep-read">深度解析</a>
+      <a href="/#faq">常见问答</a>
+    </div>
+    <div class="footer-col">
+      <h4>社区与榜单</h4>
+      <a href="/#comments">社区评论</a>
+      <a href="/#news">相关资讯</a>
+      <a href="/#related">延伸推荐</a>
+      <a href="/#ranking">热度榜单</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 每日大赛黑料在线入口 · 内容聚合示例</span>
+    <span class="disclaimer">部分内容为示例数据，仅用于展示页面结构</span>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    var input = document.getElementById('archiveSearch');
+    var btn = document.getElementById('searchBtn');
+    var feedback = document.getElementById('searchFeedback');
+
+    function doSearch() {
+      var q = (input.value || '').trim();
+      if (!q) {
+        feedback.textContent = '请输入关键词后再查找。';
+        feedback.classList.add('show');
+        return;
+      }
+      var items = document.querySelectorAll('#featured .card h3 a, #featured .card-desc, #updates .update-content .title a, #updates .update-content .brief');
+      var matches = [];
+      items.forEach(function(el) {
+        if (el.textContent.indexOf(q) !== -1) {
+          var card = el.closest('.card');
+          var update = el.closest('.update-item');
+          if (card && matches.indexOf(card) === -1) matches.push(card);
+          if (update && matches.indexOf(update) === -1) matches.push(update);
+        }
+      });
+      if (matches.length === 0) {
+        feedback.innerHTML = '未找到包含「<strong>' + q + '</strong>」的条目，请尝试其他关键词。';
+        feedback.classList.add('show');
+      } else {
+        feedback.innerHTML = '找到 <strong>' + matches.length + '</strong> 个包含「' + q + '」的条目，已在页面中标记。';
+        feedback.classList.add('show');
+        matches.forEach(function(el) {
+          el.style.outline = '2px solid #e8b04b';
+          el.style.outlineOffset = '2px';
+          setTimeout(function() {
+            el.style.outline = '';
+            el.style.outlineOffset = '';
+          }, 3000);
+        });
+        matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    btn.addEventListener('click', doSearch);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doSearch();
+    });
+  })();
+</script>
+
+</body>
+            </html>
