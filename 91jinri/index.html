@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>91今日大赛 - 赛事直播与比分聚合</title>
+  <meta name="description" content="91今日大赛汇聚电竞赛事、体育竞技与知识问答的实时赛程。提供今日对阵、积分榜、深度复盘、选手数据与社区讨论，适合关注竞技赛事的观众与参与者。">
+  <meta name="keywords" content="电竞赛程,体育竞技,积分排行榜,实时比分,赛事复盘">
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --surface-alt: #f0f2f5;
+      --text: #1e2329;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --border-dark: #d1d5db;
+      --primary: #0b3b5c;
+      --primary-light: #1a5a7a;
+      --accent: #e07b39;
+      --accent-light: #fdf0e8;
+      --success: #0f7b4b;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.07);
+      --font: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+      --max-width: 1360px;
+      --header-height: 60px;
+      --announce-height: 40px;
+      --scroll-offset: calc(var(--header-height) + var(--announce-height) + 10px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: var(--scroll-offset); }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { color: var(--accent); }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* ---------- 吸顶公告条 ---------- */
+    .announce-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--primary);
+      color: #fff;
+      height: var(--announce-height);
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      padding: 0 20px;
+      letter-spacing: 0.3px;
+    }
+    .announce-bar .inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .announce-bar .tag {
+      background: var(--accent);
+      color: #fff;
+      padding: 1px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .announce-bar a { color: #fff; text-decoration: underline; opacity: 0.9; }
+    .announce-bar a:hover { opacity: 1; }
+
+    /* ---------- 吸顶页头 ---------- */
+    .site-header {
+      position: sticky;
+      top: var(--announce-height);
+      z-index: 99;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      height: var(--header-height);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .logo-text {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.3px;
+      white-space: nowrap;
+    }
+    .main-nav {
+      display: flex;
+      gap: 4px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .main-nav::-webkit-scrollbar { display: none; }
+    .main-nav a {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .main-nav a:hover { background: var(--surface-alt); color: var(--primary); }
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface-alt);
+      border-radius: 20px;
+      padding: 0 12px;
+      height: 34px;
+      border: 1px solid transparent;
+      transition: border 0.2s;
+    }
+    .search-box:focus-within { border-color: var(--primary-light); background: #fff; }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      width: 130px;
+      font-family: var(--font);
+      color: var(--text);
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .search-box button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      padding: 0 2px;
+    }
+    .search-box button:hover { color: var(--primary); }
+    .btn-login {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .btn-login:hover { background: var(--primary-light); }
+
+    /* ---------- 主容器 ---------- */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ---------- 首屏 ---------- */
+    .hero {
+      background: linear-gradient(135deg, #0b3b5c 0%, #124a6e 50%, #1a5a7a 100%);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      color: #fff;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 30px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(224,123,57,0.15);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      left: 40%;
+      bottom: -80px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      opacity: 0.88;
+      max-width: 540px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 22px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: var(--font);
+    }
+    .hero-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .hero-btn.primary:hover { background: #c96a2e; transform: translateY(-1px); }
+    .hero-btn.outline {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.5);
+    }
+    .hero-btn.outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .score-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(4px);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .score-card .team { font-size: 13px; font-weight: 600; }
+    .score-card .score { font-size: 20px; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+    .score-card .badge {
+      font-size: 10px;
+      background: rgba(255,255,255,0.15);
+      padding: 2px 8px;
+      border-radius: 10px;
+      color: #ddd;
+    }
+
+    /* ---------- 三栏布局 ---------- */
+    .layout-3col {
+      display: grid;
+      grid-template-columns: 180px 1fr 250px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ---------- 左频道索引 ---------- */
+    .channel-aside {
+      position: sticky;
+      top: var(--scroll-offset);
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 14px 0;
+      box-shadow: var(--shadow);
+    }
+    .channel-aside h3 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding: 0 16px 8px;
+      font-weight: 600;
+    }
+    .channel-nav { list-style: none; }
+    .channel-nav li { border-bottom: 1px solid var(--border); }
+    .channel-nav li:last-child { border-bottom: none; }
+    .channel-nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .channel-nav a:hover { background: var(--surface-alt); color: var(--primary); padding-left: 20px; }
+    .channel-nav a .icon { font-size: 15px; width: 18px; text-align: center; }
+
+    /* ---------- 中间主内容 ---------- */
+    .main-content { min-width: 0; }
+    .section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-header h2::before {
+      content: '';
+      width: 4px;
+      height: 18px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .section-header .more {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .section-header .more:hover { color: var(--accent); }
+
+    /* 概览文字 */
+    .overview-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .overview-text p { margin-bottom: 10px; }
+    .overview-text p:last-child { margin-bottom: 0; }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 14px;
+    }
+    .event-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--surface);
+      transition: box-shadow 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .event-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .event-card .card-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--surface-alt);
+    }
+    .event-card .card-body { padding: 10px 12px 12px; flex: 1; display: flex; flex-direction: column; }
+    .event-card .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .event-card .card-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .tag {
+      font-size: 10.5px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      background: var(--surface-alt);
+      color: var(--text-secondary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag.accent { background: var(--accent-light); color: var(--accent); }
+    .tag.primary { background: #e8f0f5; color: var(--primary); }
+    .event-card .card-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 6px;
+    }
+    .event-card .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      padding-top: 6px;
+      border-top: 1px solid var(--border);
+    }
+    .hot-score { color: var(--accent); font-weight: 700; }
+
+    /* 紧凑列表 */
+    .compact-list { list-style: none; }
+    .compact-list li {
+      display: flex;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      align-items: flex-start;
+    }
+    .compact-list li:last-child { border-bottom: none; }
+    .compact-list .item-name { font-weight: 600; color: var(--text); white-space: nowrap; }
+    .compact-list .item-desc { color: var(--text-muted); font-size: 12.5px; line-height: 1.5; }
+    .compact-list .item-time { margin-left: auto; font-size: 11.5px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+
+    /* 分类入口 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .category-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 8px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-alt);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-align: center;
+    }
+    .category-item:hover { background: #fff; border-color: var(--primary-light); box-shadow: var(--shadow); }
+    .category-item .cat-icon { font-size: 24px; line-height: 1; }
+    .category-item .cat-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .category-item .cat-count { font-size: 11px; color: var(--text-muted); }
+
+    /* 深度解析 */
+    .deep-dive h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 18px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .deep-dive h3:first-of-type { margin-top: 0; }
+    .deep-dive p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    .deep-dive ul {
+      margin: 8px 0 14px 18px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    .deep-dive ul li { margin-bottom: 4px; }
+
+    /* 体验指南 */
+    .guide-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      counter-reset: step;
+    }
+    .guide-step {
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      position: relative;
+      counter-increment: step;
+    }
+    .guide-step::before {
+      content: counter(step);
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .guide-step h4 { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+    .guide-step p { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 6px; }
+    details {
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    details summary {
+      padding: 11px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before {
+      content: '▸';
+      font-size: 11px;
+      color: var(--accent);
+      transition: transform 0.2s;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    details .faq-answer {
+      padding: 0 14px 12px 32px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* 评论 */
+    .comment-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .comment-item {
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+    }
+    .comment-item .comment-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .comment-item .avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .comment-item .nickname { font-size: 12px; font-weight: 600; color: var(--text); }
+    .comment-item .comment-time { font-size: 10px; color: var(--text-muted); margin-left: auto; }
+    .comment-item .comment-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+    .comment-item .comment-tag { font-size: 10px; color: var(--accent); margin-top: 3px; }
+
+    /* 资讯 */
+    .news-list { display: flex; flex-direction: column; gap: 0; }
+    .news-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .news-item:last-child { border-bottom: none; }
+    .news-item .news-img {
+      width: 80px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--surface-alt);
+    }
+    .news-item .news-body { flex: 1; min-width: 0; }
+    .news-item .news-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .news-item .news-abstract { font-size: 12px; color: var(--text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .news-item .news-date { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    /* 相关推荐标签 */
+    .related-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .related-tags a {
+      display: inline-block;
+      padding: 5px 14px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .related-tags a:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* 榜单 */
+    .rank-list { list-style: none; counter-reset: rank; }
+    .rank-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      counter-increment: rank;
+      font-size: 13.5px;
+    }
+    .rank-list li:last-child { border-bottom: none; }
+    .rank-list li::before {
+      content: counter(rank);
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .rank-list li:nth-child(1)::before { background: #fef3c7; color: #b45309; }
+    .rank-list li:nth-child(2)::before { background: #e5e7eb; color: #4b5563; }
+    .rank-list li:nth-child(3)::before { background: #fde68a; color: #92400e; }
+    .rank-list .rank-name { font-weight: 600; color: var(--text); flex: 1; }
+    .rank-list .rank-score { font-size: 12px; color: var(--accent); font-weight: 700; }
+
+    /* 右侧辅助栏 */
+    .sidebar { position: sticky; top: var(--scroll-offset); display: flex; flex-direction: column; gap: 16px; }
+    .sidebar-box {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .sidebar-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sidebar-box h3::before {
+      content: '';
+      width: 3px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    .update-stream { list-style: none; }
+    .update-stream li {
+      font-size: 12.5px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: flex;
+      gap: 6px;
+    }
+    .update-stream li:last-child { border-bottom: none; }
+    .update-stream .time { color: var(--text-muted); font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+
+    /* 页尾 */
+    .site-footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.8);
+      margin-top: 30px;
+      padding: 32px 20px 20px;
+    }
+    .footer-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 30px;
+    }
+    .footer-brand .footer-logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .footer-brand p { font-size: 12.5px; line-height: 1.7; margin-bottom: 8px; }
+    .footer-col h4 { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 10px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 6px; }
+    .footer-col ul li a { font-size: 12.5px; color: rgba(255,255,255,0.7); }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: var(--max-width);
+      margin: 20px auto 0;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.5);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* 无结果反馈 */
+    .no-result {
+      display: none;
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+    }
+
+    /* 筛选按钮 */
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .filter-btn {
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    /* 响应式 */
+    @media (max-width: 1024px) {
+      .layout-3col { grid-template-columns: 1fr 240px; }
+      .channel-aside { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 28px; }
+      .hero-visual { flex-direction: row; flex-wrap: wrap; }
+      .score-card { flex: 1; min-width: 120px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .comment-list { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 740px) {
+      .layout-3col { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .hero h1 { font-size: 24px; }
+      .hero { padding: 22px; }
+      .header-inner { padding: 0 12px; gap: 12px; }
+      .search-box input { width: 80px; }
+      .main-nav { gap: 0; }
+      .main-nav a { padding: 6px 8px; font-size: 12.5px; }
+      .logo-text { font-size: 16px; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .card-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .section { padding: 16px; }
+      .container { padding: 12px; }
+      .announce-bar { font-size: 11.5px; padding: 0 12px; }
+      .news-item .news-img { width: 64px; height: 46px; }
+      .comment-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* 焦点可见 */
+    a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 吸顶公告条 -->
+<div class="announce-bar" id="announce-bar">
+  <div class="inner">
+    <span class="tag">今日更新</span>
+    <span>11 月 8 日赛程已上线：共 12 场对决，含 <a href="/#schedule">英雄联盟手游挑战赛</a>、<a href="/#schedule">3v3 篮球争霸</a> 与 <a href="/#schedule">速算擂台赛</a> 第 3 轮</span>
+  </div>
+</div>
+
+<!-- 吸顶页头 -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M2 17l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M2 12l10 5 10-5" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="logo-text">91今日大赛</span>
+    </div>
+    <nav class="main-nav" aria-label="主题导航">
+      <a href="/#schedule">今日赛程</a>
+      <a href="/#featured">热门对阵</a>
+      <a href="/#category">赛事分类</a>
+      <a href="/#deep-dive">深度复盘</a>
+      <a href="/#faq">常见问答</a>
+      <a href="/#comments">社区评论</a>
+      <a href="/#news">赛事资讯</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="搜索赛事或队伍" aria-label="搜索赛事或队伍">
+        <button type="button" id="search-btn" aria-label="搜索">🔍</button>
+      </div>
+      <button class="btn-login" type="button">登录</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 首屏 -->
+  <section class="hero" aria-label="主题首屏">
+    <div class="hero-content">
+      <h1>91今日大赛</h1>
+      <p class="hero-desc">
+        聚合电竞赛事、体育竞技与知识问答的当日赛程、实时比分、积分排名与赛后复盘。覆盖英雄联盟手游挑战赛、3v3 篮球争霸、速算擂台赛等 8 个核心项目，每日更新对阵信息与选手数据。
+      </p>
+      <div class="hero-actions">
+        <a href="/#schedule" class="hero-btn primary">查看今日赛程</a>
+        <a href="/#featured" class="hero-btn outline">热门对阵推荐</a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="score-card">
+        <span class="team">闪电狼</span>
+        <span class="score">2 : 1</span>
+        <span class="team">猛虎</span>
+        <span class="badge">进行中</span>
+      </div>
+      <div class="score-card">
+        <span class="team">速算王者</span>
+        <span class="score">148</span>
+        <span class="team">计算达人</span>
+        <span class="badge">已结束</span>
+      </div>
+      <div class="score-card">
+        <span class="team">东区飞龙</span>
+        <span class="score">87 : 79</span>
+        <span class="team">西区雄鹰</span>
+        <span class="badge">第四节</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 三栏布局 -->
+  <div class="layout-3col">
+
+    <!-- 左侧频道索引 -->
+    <aside class="channel-aside" aria-label="频道索引">
+      <h3>赛事频道</h3>
+      <ul class="channel-nav">
+        <li><a href="/#schedule"><span class="icon">🎮</span> 电竞赛程</a></li>
+        <li><a href="/#schedule"><span class="icon">🏀</span> 体育竞技</a></li>
+        <li><a href="/#schedule"><span class="icon">🧠</span> 知识问答</a></li>
+        <li><a href="/#featured"><span class="icon">🔥</span> 热门对阵</a></li>
+        <li><a href="/#category"><span class="icon">📂</span> 全部项目</a></li>
+        <li><a href="/#rank"><span class="icon">🏆</span> 积分榜</a></li>
+        <li><a href="/#deep-dive"><span class="icon">📝</span> 赛后复盘</a></li>
+        <li><a href="/#news"><span class="icon">📰</span> 赛事资讯</a></li>
+        <li><a href="/#comments"><span class="icon">💬</span> 社区热评</a></li>
+      </ul>
+    </aside>
+
+    <!-- 中间主内容 -->
+    <div class="main-content">
+
+      <!-- 1. 主题领域概览 -->
+      <section class="section" id="overview">
+        <div class="section-header">
+          <h2>今日赛事领域概览</h2>
+        </div>
+        <div class="overview-text">
+          <p>
+            竞技赛事聚合领域涵盖电竞赛事、传统体育模拟竞技与知识竞答三大方向。电竞方面，英雄联盟手游挑战赛采用 BO3 赛制，今日进入小组赛第二轮，8 支队伍争夺 4 个出线名额；体育竞技以 3v3 篮球争霸与街头足球 1v1 为主，强调快节奏对抗与个人技术展示；知识问答类包含速算擂台赛、百科抢答赛与逻辑推演赛，考验反应速度与知识广度。
+          </p>
+          <p>
+            当前值得关注的看点包括：闪电狼与猛虎的胜者组对决，两队历史交手 5 次，闪电狼以 3 胜 2 负略占上风；速算擂台赛第三轮引入双位数乘法与多步混合运算，难度较前两轮提升约 40%；3v3 篮球争霸东区飞龙与西区雄鹰的榜首之争，胜者将直接锁定季后赛席位。此外，百科抢答赛新增“科技史”题库，覆盖 200 道新题。
+          </p>
+        </div>
+      </section>
+
+      <!-- 2. 精选内容推荐 -->
+      <section class="section" id="featured">
+        <div class="section-header">
+          <h2>今日精选对阵推荐</h2>
+          <a href="/#schedule" class="more">全部赛程 →</a>
+        </div>
+        <div class="card-grid" id="featured-grid">
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/lol-mobile-01/400/300" alt="英雄联盟手游挑战赛闪电狼对阵猛虎" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">闪电狼 vs 猛虎</h3>
+              <div class="card-meta">
+                <span class="tag primary">电竞</span>
+                <span class="tag accent">BO3</span>
+                <span class="tag">胜者组</span>
+              </div>
+              <p class="card-desc">小组赛第二轮焦点战，闪电狼中野联动效率联赛第一，猛虎下路组合分均伤害领先 12%。</p>
+              <div class="card-footer">
+                <span>14:00 开赛</span>
+                <span class="hot-score">热度 9.6</span>
+              </div>
+            </div>
+          </article>
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/basketball-3v3-02/400/300" alt="3v3篮球争霸东区飞龙对阵西区雄鹰" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">东区飞龙 vs 西区雄鹰</h3>
+              <div class="card-meta">
+                <span class="tag primary">体育</span>
+                <span class="tag accent">3v3</span>
+                <span class="tag">榜首之争</span>
+              </div>
+              <p class="card-desc">两队战绩同为 7 胜 2 负，飞龙内线命中率 58%，雄鹰三分出手占比 42%，风格截然不同。</p>
+              <div class="card-footer">
+                <span>19:30 开赛</span>
+                <span class="hot-score">热度 9.2</span>
+              </div>
+            </div>
+          </article>
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/speed-math-03/400/300" alt="速算擂台赛第三轮比赛现场" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">速算擂台赛 第三轮</h3>
+              <div class="card-meta">
+                <span class="tag primary">知识</span>
+                <span class="tag accent">双位数</span>
+                <span class="tag">限时</span>
+              </div>
+              <p class="card-desc">新增双位数乘法与多步混合运算，单题限时 8 秒。卫冕冠军“速算王者”前两轮正确率 100%。</p>
+              <div class="card-footer">
+                <span>20:00 开赛</span>
+                <span class="hot-score">热度 8.8</span>
+              </div>
+            </div>
+          </article>
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/street-football-04/400/300" alt="街头足球1v1对战精彩瞬间" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">街头足球 1v1 半决赛</h3>
+              <div class="card-meta">
+                <span class="tag primary">体育</span>
+                <span class="tag accent">1v1</span>
+                <span class="tag">淘汰赛</span>
+              </div>
+              <p class="card-desc">“盘带王”李昊对阵“铁闸”陈东，前者场均过人 6.2 次，后者抢断成功率 81%。</p>
+              <div class="card-footer">
+                <span>16:00 开赛</span>
+                <span class="hot-score">热度 8.5</span>
+              </div>
+            </div>
+          </article>
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/encyclopedia-05/400/300" alt="百科抢答赛科技史专场现场" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">百科抢答赛 科技史专场</h3>
+              <div class="card-meta">
+                <span class="tag primary">知识</span>
+                <span class="tag accent">新题库</span>
+                <span class="tag">200 题</span>
+              </div>
+              <p class="card-desc">新增 200 道科技史题目，涵盖计算机发展、航天里程碑与材料科学，抢答倒计时 3 秒。</p>
+              <div class="card-footer">
+                <span>21:00 开赛</span>
+                <span class="hot-score">热度 8.1</span>
+              </div>
+            </div>
+          </article>
+          <article class="event-card">
+            <img class="card-img" src="https://picsum.photos/seed/logic-06/400/300" alt="逻辑推演赛棋盘推演环节" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <h3 class="card-title">逻辑推演赛 晋级赛</h3>
+              <div class="card-meta">
+                <span class="tag primary">知识</span>
+                <span class="tag accent">推理</span>
+                <span class="tag">12 人</span>
+              </div>
+              <p class="card-desc">12 名选手进行 5 轮逻辑谜题推演，每轮淘汰 2 人。上届冠军“推理师”首轮轮空。</p>
+              <div class="card-footer">
+                <span>15:00 开赛</span>
+                <span class="hot-score">热度 7.9</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="no-result" id="no-result">未找到匹配的赛事，请尝试其他关键词。</div>
+      </section>
+
+      <!-- 3. 最新更新 / 动态 -->
+      <section class="section" id="schedule">
+        <div class="section-header">
+          <h2>今日赛程与最新动态</h2>
+          <span class="more">11 月 8 日更新</span>
+        </div>
+        <ul class="compact-list">
+          <li>
+            <span class="item-name">英雄联盟手游挑战赛</span>
+            <span class="item-desc">闪电狼 vs 猛虎 14:00 开赛，BO3 胜者组</span>
+            <span class="item-time">今天 09:30</span>
+          </li>
+          <li>
+            <span class="item-name">3v3 篮球争霸</span>
+            <span class="item-desc">东区飞龙 vs 西区雄鹰 19:30，榜首直接对话</span>
+            <span class="item-time">今天 10:15</span>
+          </li>
+          <li>
+            <span class="item-name">速算擂台赛</span>
+            <span class="item-desc">第三轮 20:00 开赛，新增双位数乘法题型</span>
+            <span class="item-time">今天 11:00</span>
+          </li>
+          <li>
+            <span class="item-name">街头足球 1v1</span>
+            <span class="item-desc">半决赛 16:00 李昊 vs 陈东，胜者晋级决赛</span>
+            <span class="item-time">今天 08:45</span>
+          </li>
+          <li>
+            <span class="item-name">百科抢答赛</span>
+            <span class="item-desc">科技史专场 21:00，题库已更新至 200 题</span>
+            <span class="item-time">今天 07:20</span>
+          </li>
+          <li>
+            <span class="item-name">逻辑推演赛</span>
+            <span class="item-desc">晋级赛 15:00 开赛，12 人淘汰制</span>
+            <span class="item-time">昨天 21:10</span>
+          </li>
+          <li>
+            <span class="item-name">闪电狼</span>
+            <span class="item-desc">官宣首发阵容不变，中单选手“夜影”继续出战</span>
+            <span class="item-time">昨天 18:30</span>
+          </li>
+          <li>
+            <span class="item-name">速算王者</span>
+            <span class="item-desc">赛前采访表示已针对双位数乘法加练 2000 题</span>
+            <span class="item-time">11 月 6 日</span>
+          </li>
+          <li>
+            <span class="item-name">东区飞龙</span>
+            <span class="item-desc">主力中锋伤愈复出，今日比赛确认出场</span>
+            <span class="item-time">11 月 5 日</span>
+          </li>
+          <li>
+            <span class="item-name">百科抢答赛</span>
+            <span class="item-desc">赛制调整：抢答倒计时由 5 秒缩短至 3 秒</span>
+            <span class="item-time">11 月 3 日</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 4. 分类入口 -->
+      <section class="section" id="category">
+        <div class="section-header">
+          <h2>赛事分类入口</h2>
+        </div>
+        <div class="category-grid">
+          <div class="category-item" tabindex="0" role="link" aria-label="英雄联盟手游">
+            <span class="cat-icon">🎮</span>
+            <span class="cat-name">英雄联盟手游</span>
+            <span class="cat-count">12 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="3v3篮球">
+            <span class="cat-icon">🏀</span>
+            <span class="cat-name">3v3 篮球</span>
+            <span class="cat-count">8 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="速算擂台">
+            <span class="cat-icon">🧮</span>
+            <span class="cat-name">速算擂台</span>
+            <span class="cat-count">5 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="街头足球">
+            <span class="cat-icon">⚽</span>
+            <span class="cat-name">街头足球</span>
+            <span class="cat-count">6 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="百科抢答">
+            <span class="cat-icon">📚</span>
+            <span class="cat-name">百科抢答</span>
+            <span class="cat-count">4 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="逻辑推演">
+            <span class="cat-icon">🧠</span>
+            <span class="cat-name">逻辑推演</span>
+            <span class="cat-count">3 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="综合格斗模拟">
+            <span class="cat-icon">🥊</span>
+            <span class="cat-name">格斗模拟</span>
+            <span class="cat-count">5 场</span>
+          </div>
+          <div class="category-item" tabindex="0" role="link" aria-label="赛车竞速">
+            <span class="cat-icon">🏎️</span>
+            <span class="cat-name">赛车竞速</span>
+            <span class="cat-count">7 场</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 深度解析 -->
+      <section class="section deep-dive" id="deep-dive">
+        <div class="section-header">
+          <h2>深度解析：今日大赛的竞技看点与评判维度</h2>
+        </div>
+        <h3>电竞赛事：BO3 赛制下的战术博弈</h3>
+        <p>
+          英雄联盟手游挑战赛今日采用 BO3 赛制，对战队的地图池深度与临场调整能力提出更高要求。闪电狼与猛虎的对决中，首局 BP 将直接影响后续战术走向。闪电狼中野联动效率联赛第一，场均前 10 分钟击杀 4.2 次，擅长通过早期小规模团战建立优势；猛虎则偏向控图运营，场均小龙控制率 68%，但前期碰撞频率较低。
+        </p>
+        <p>
+          从历史交手看，两队近 5 次 BO3 中闪电狼 3 胜 2 负，但最近一次交手猛虎以 2:0 完胜。关键变量在于闪电狼中单“夜影”的游走时机与猛虎下路组合的发育节奏。若闪电狼能在前 8 分钟拿到两条小龙，胜率将提升至 72%；若猛虎拖到 20 分钟后，其团战阵型完整度优势明显。
+        </p>
+        <h3>体育竞技：3v3 篮球的空间与效率</h3>
+        <p>
+          东区飞龙与西区雄鹰的榜首之争，本质是两种进攻哲学的碰撞。飞龙内线命中率 58%，场均禁区得分 34 分，依靠身体优势与二次进攻；雄鹰三分出手占比 42%，场均命中 9.8 记三分，强调空间拉扯与快速传导。双方此前交手一次，飞龙以 2 分险胜，但雄鹰那场三分命中率仅 29%，低于赛季平均。
+        </p>
+        <ul>
+          <li><strong>飞龙关键点：</strong>控制篮板球，将比赛回合数压到 70 以下，减少雄鹰的转换三分机会。</li>
+          <li><strong>雄鹰关键点：</strong>利用挡拆制造错位，迫使飞龙扩防，为突破分球创造空间。</li>
+          <li><strong>胜负手：</strong>最后 3 分钟罚球命中率——飞龙 76%，雄鹰 82%。</li>
+        </ul>
+        <h3>知识问答：速算与逻辑的难度分层</h3>
+        <p>
+          速算擂台赛第三轮将题型从两位数加减升级为双位数乘法与多步混合运算，单题限时 8 秒。根据前两轮数据，选手平均正确率从第一轮的 94% 降至第二轮的 87%，第三轮预计进一步下滑至 78% 左右。卫冕冠军“速算王者”前两轮正确率 100%，但本轮新增的“括号嵌套”题型对其构成真正挑战。
+        </p>
+        <p>
+          逻辑推演赛则采用 5 轮淘汰制，每轮 2 人出局。题目类型包括数列规律、空间旋转与命题推理，评分标准综合正确率与用时。上届冠军“推理师”首轮轮空，次轮大概率对阵“逻辑猫”——后者在数列规律题上正确率 96%，但空间旋转题仅 71%，存在明显偏科。
+        </p>
+        <h3>评判维度与观赛策略</h3>
+        <p>
+          判断一场赛事是否值得投入时间，可从三个维度切入：一是选手/战队的历史交手记录与近期状态，二是赛制带来的不确定性（如 BO3 的容错空间小于 BO5），三是项目本身的对抗节奏（速算赛单场 20 分钟，电竞 BO3 约 90 分钟，篮球 3v3 约 40 分钟）。建议优先选择有直接排名影响的场次，其次关注风格克制明显的对决。
+        </p>
+      </section>
+
+      <!-- 6. 体验指南 -->
+      <section class="section" id="guide">
+        <div class="section-header">
+          <h2>观赛体验指南：从哪场开始看</h2>
+        </div>
+        <div class="guide-steps">
+          <div class="guide-step">
+            <h4>先看排名影响大的场次</h4>
+            <p>东区飞龙 vs 西区雄鹰的胜者直接锁定季后赛席位，属于今日优先级最高的比赛。</p>
+          </div>
+          <div class="guide-step">
+            <h4>再选风格克制的对决</h4>
+            <p>闪电狼的快攻与猛虎的控图形成鲜明反差，历史交手互有胜负，悬念感强。</p>
+          </div>
+          <div class="guide-step">
+            <h4>知识类短赛制适合碎片时间</h4>
+            <p>速算擂台赛单场约 20 分钟，百科抢答赛约 25 分钟，适合午休或通勤间隙观看。</p>
+          </div>
+          <div class="guide-step">
+            <h4>关注赛后数据复盘</h4>
+            <p>赛后 1 小时内会更新选手分均伤害、经济差、关键回合成功率等数据，帮助判断下一场走势。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. FAQ -->
+      <section class="section" id="faq">
+        <div class="section-header">
+          <h2>常见问答</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>91今日大赛的电竞赛事一般多久更新一次赛程？</summary>
+            <div class="faq-answer">每日中午 12:00 前更新次日赛程，当日对阵如有临时调整会在开赛前 2 小时公告。小组赛阶段每天 2—4 场，淘汰赛阶段每天 1—2 场。</div>
+          </details>
+          <details>
+            <summary>闪电狼和猛虎的历史交手记录如何？</summary>
+            <div class="faq-answer">近 5 次 BO3 交手，闪电狼 3 胜 2 负。最近一次是 2026 年 10 月 20 日，猛虎以 2:0 获胜。双方总地图胜率闪电狼 54%，猛虎 46%。</div>
+          </details>
+          <details>
+            <summary>速算擂台赛第三轮难度比前两轮高多少？</summary>
+            <div class="faq-answer">题型从两位数加减升级为双位数乘法与多步混合运算，单题限时从 10 秒缩短至 8 秒，预计选手平均正确率下降约 9 个百分点。</div>
+          </details>
+          <details>
+            <summary>3v3 篮球争霸的季后赛席位规则是什么？</summary>
+            <div class="faq-answer">东区与西区各取前 4 名进入季后赛，今日东区飞龙与西区雄鹰的胜者将直接锁定各自分区第一，获得季后赛主场优势。</div>
+          </details>
+          <details>
+            <summary>第一次看逻辑推演赛，从哪场开始比较好？</summary>
+            <div class="faq-answer">建议从今日 15:00 的晋级赛开始看，规则简单：5 轮谜题，每轮淘汰 2 人，答题正确率与用时共同计分。首轮轮空的“推理师”次轮出场，是了解项目节奏的好节点。</div>
+          </details>
+          <details>
+            <summary>百科抢答赛的新题库“科技史”包含哪些内容？</summary>
+            <div class="faq-answer">覆盖计算机发展（ENIAC、图灵奖）、航天里程碑（阿波罗计划、空间站）、材料科学（半导体、超导）三大板块，共 200 道题，其中 40% 为首次出现的题目。</div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 8. 用户评论 -->
+      <section class="section" id="comments">
+        <div class="section-header">
+          <h2>社区热评</h2>
+        </div>
+        <div class="comment-list">
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">球</span><span class="nickname">看球不熬夜</span><span class="comment-time">今天 10:22</span></div>
+            <p class="comment-text">飞龙内线确实猛，但雄鹰三分开了就难说，上次交手雄鹰三分铁成那样才输 2 分。</p>
+            <span class="comment-tag">3v3 篮球</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">电</span><span class="nickname">电竞老猫</span><span class="comment-time">今天 10:05</span></div>
+            <p class="comment-text">闪电狼前期节奏确实好，但猛虎拖后期团战站位太稳了，BO3 看好打满三局。</p>
+            <span class="comment-tag">英雄联盟手游</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">算</span><span class="nickname">心算小能手</span><span class="comment-time">今天 09:48</span></div>
+            <p class="comment-text">双位数乘法 8 秒有点极限，我试了下 37×24 要 5 秒，多步混合运算估计得 10 秒以上。</p>
+            <span class="comment-tag">速算擂台</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">推</span><span class="nickname">推理爱好者</span><span class="comment-time">今天 09:30</span></div>
+            <p class="comment-text">逻辑推演赛空间旋转题占比太高了，对偏数列的选手不太友好，赛制可以再均衡点。</p>
+            <span class="comment-tag">逻辑推演</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">足</span><span class="nickname">盘带大师兄</span><span class="comment-time">今天 09:12</span></div>
+            <p class="comment-text">李昊过人确实花哨，但陈东抢断成功率 81% 不是开玩笑的，这场五五开。</p>
+            <span class="comment-tag">街头足球</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">百</span><span class="nickname">百科达人</span><span class="comment-time">今天 08:55</span></div>
+            <p class="comment-text">科技史题库还行，但航天部分出题有点偏，阿波罗 11 号都考了三道类似的。</p>
+            <span class="comment-tag">百科抢答</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">闪</span><span class="nickname">闪电狼铁粉</span><span class="comment-time">今天 08:40</span></div>
+            <p class="comment-text">夜影的游走时机是胜负手，前 8 分钟拿两条龙基本就稳了，信一手 2:0。</p>
+            <span class="comment-tag">英雄联盟手游</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">鹰</span><span class="nickname">雄鹰展翅</span><span class="comment-time">今天 08:22</span></div>
+            <p class="comment-text">雄鹰三分只要正常发挥，飞龙扩防就来不及，看好雄鹰赢 5 分以上。</p>
+            <span class="comment-tag">3v3 篮球</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">速</span><span class="nickname">速算王者加油</span><span class="comment-time">今天 08:10</span></div>
+            <p class="comment-text">速算王者加练 2000 题有点狠，但比赛压力不一样，第三轮悬念还是大。</p>
+            <span class="comment-tag">速算擂台</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">逻</span><span class="nickname">逻辑猫本猫</span><span class="comment-time">昨天 22:15</span></div>
+            <p class="comment-text">空间旋转题确实不是我的强项，但这次晋级赛数列题多，有机会冲一冲。</p>
+            <span class="comment-tag">逻辑推演</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">中</span><span class="nickname">中立看客</span><span class="comment-time">昨天 21:40</span></div>
+            <p class="comment-text">今天赛程密度挺高，从下午三点看到晚上九点，中间基本没空档。</p>
+            <span class="comment-tag">综合</span>
+          </div>
+          <div class="comment-item">
+            <div class="comment-head"><span class="avatar">格</span><span class="nickname">格斗迷老张</span><span class="comment-time">昨天 20:55</span></div>
+            <p class="comment-text">格斗模拟那边也有比赛，不过关注度比电竞和篮球低不少，讨论区冷清。</p>
+            <span class="comment-tag">格斗模拟</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. 相关资讯 -->
+      <section class="section" id="news">
+        <div class="section-header">
+          <h2>赛事资讯</h2>
+        </div>
+        <div class="news-list">
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-lol-finals/600/400" alt="英雄联盟手游挑战赛小组赛现场" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">英雄联盟手游挑战赛小组赛第二轮开打，闪电狼与猛虎争夺胜者组头名</h3>
+              <p class="news-abstract">今日 14:00 开赛，BO3 赛制。闪电狼首发不变，猛虎下路组合近期状态火热。</p>
+              <span class="news-date">2026-11-08</span>
+            </div>
+          </article>
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-speed-math/600/400" alt="速算擂台赛第三轮题型公布" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">速算擂台赛第三轮题型公布：双位数乘法与多步混合运算，限时缩短至 8 秒</h3>
+              <p class="news-abstract">难度较前两轮提升约 40%，卫冕冠军“速算王者”赛前加练 2000 题。</p>
+              <span class="news-date">2026-11-07</span>
+            </div>
+          </article>
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-basketball/600/400" alt="3v3篮球争霸榜首战海报" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">3v3 篮球争霸东区飞龙与西区雄鹰今晚争夺榜首，胜者直通季后赛</h3>
+              <p class="news-abstract">飞龙内线命中率 58%，雄鹰三分出手占比 42%，两种风格正面碰撞。</p>
+              <span class="news-date">2026-11-06</span>
+            </div>
+          </article>
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-encyclopedia/600/400" alt="百科抢答赛科技史题库更新" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">百科抢答赛新增“科技史”题库 200 道，抢答倒计时缩短至 3 秒</h3>
+              <p class="news-abstract">覆盖计算机、航天与材料科学三大板块，40% 为首次出现的新题。</p>
+              <span class="news-date">2026-11-05</span>
+            </div>
+          </article>
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-football/600/400" alt="街头足球1v1半决赛对阵公布" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">街头足球 1v1 半决赛对阵出炉：李昊迎战陈东，盘带与抢断的较量</h3>
+              <p class="news-abstract">李昊场均过人 6.2 次，陈东抢断成功率 81%，今日 16:00 开赛。</p>
+              <span class="news-date">2026-11-04</span>
+            </div>
+          </article>
+          <article class="news-item">
+            <img class="news-img" src="https://picsum.photos/seed/news-logic/600/400" alt="逻辑推演赛晋级赛规则调整" width="600" height="400" loading="lazy">
+            <div class="news-body">
+              <h3 class="news-title">逻辑推演赛晋级赛改为 5 轮淘汰制，每轮出局 2 人，上届冠军首轮轮空</h3>
+              <p class="news-abstract">评分标准综合正确率与用时，数列规律与空间旋转题占比各半。</p>
+              <span class="news-date">2026-11-03</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 10. 相关推荐 -->
+      <section class="section" id="related">
+        <div class="section-header">
+          <h2>延伸内容方向</h2>
+        </div>
+        <div class="related-tags">
+          <a href="/#schedule">英雄联盟手游 BO3 赛制解读</a>
+          <a href="/#schedule">3v3 篮球挡拆战术</a>
+          <a href="/#schedule">速算双位数乘法技巧</a>
+          <a href="/#deep-dive">闪电狼 vs 猛虎历史交手</a>
+          <a href="/#deep-dive">逻辑推演空间旋转题型</a>
+          <a href="/#news">百科抢答科技史题库</a>
+          <a href="/#comments">街头足球盘带与抢断</a>
+          <a href="/#schedule">格斗模拟连招评分</a>
+        </div>
+      </section>
+
+      <!-- 11. 补充板块：热门榜单 -->
+      <section class="section" id="rank">
+        <div class="section-header">
+          <h2>今日大赛热度榜</h2>
+          <span class="more">截至 11-08 10:00</span>
+        </div>
+        <ol class="rank-list">
+          <li><span class="rank-name">闪电狼 vs 猛虎（英雄联盟手游）</span><span class="rank-score">9.6</span></li>
+          <li><span class="rank-name">东区飞龙 vs 西区雄鹰（3v3 篮球）</span><span class="rank-score">9.2</span></li>
+          <li><span class="rank-name">速算擂台赛第三轮</span><span class="rank-score">8.8</span></li>
+          <li><span class="rank-name">街头足球 1v1 半决赛</span><span class="rank-score">8.5</span></li>
+          <li><span class="rank-name">百科抢答赛科技史专场</span><span class="rank-score">8.1</span></li>
+          <li><span class="rank-name">逻辑推演赛晋级赛</span><span class="rank-score">7.9</span></li>
+          <li><span class="rank-name">格斗模拟 A 组第三轮</span><span class="rank-score">7.4</span></li>
+          <li><span class="rank-name">赛车竞速计时赛</span><span class="rank-score">7.1</span></li>
+        </ol>
+      </section>
+
+    </div>
+
+    <!-- 右侧辅助栏 -->
+    <aside class="sidebar" aria-label="辅助信息">
+      <div class="sidebar-box">
+        <h3>实时更新流</h3>
+        <ul class="update-stream">
+          <li><span class="time">10:22</span> 闪电狼赛前训练结束，首发确认</li>
+          <li><span class="time">10:05</span> 雄鹰三分命中率赛前热身 12 中 9</li>
+          <li><span class="time">09:48</span> 速算擂台第三轮题库最终确认</li>
+          <li><span class="time">09:30</span> 飞龙中锋伤愈复出，今日可出战</li>
+          <li><span class="time">09:12</span> 街头足球半决赛场地检查完毕</li>
+          <li><span class="time">08:45</span> 百科抢答赛倒计时设备调试完成</li>
+          <li><span class="time">08:20</span> 逻辑推演赛对阵抽签结果公布</li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <h3>今日焦点选手</h3>
+        <ul class="update-stream">
+          <li><span class="time">⚡</span> 夜影（闪电狼中单）— 分均伤害 682</li>
+          <li><span class="time">🏀</span> 赵力（东区飞龙中锋）— 场均 18.4 分</li>
+          <li><span class="time">🧮</span> 速算王者 — 前两轮正确率 100%</li>
+          <li><span class="time">⚽</span> 李昊（盘带王）— 场均过人 6.2 次</li>
+          <li><span class="time">🧠</span> 推理师 — 上届逻辑推演冠军</li>
+        </ul>
+      </div>
+      <div class="sidebar-box">
+        <h3>快捷入口</h3>
+        <ul class="update-stream">
+          <li><a href="/#schedule">今日全部赛程</a></li>
+          <li><a href="/#rank">热度榜单</a></li>
+          <li><a href="/#deep-dive">赛后复盘</a></li>
+          <li><a href="/#news">赛事资讯</a></li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<!-- 页尾 -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">91今日大赛</div>
+      <p>聚合电竞赛事、体育竞技与知识问答的当日赛程、实时比分与深度复盘，为竞技爱好者提供每日对阵信息与数据参考。</p>
+    </div>
+    <div class="footer-col">
+      <h4>赛事频道</h4>
+      <ul>
+        <li><a href="/#schedule">今日赛程</a></li>
+        <li><a href="/#featured">热门对阵</a></li>
+        <li><a href="/#category">赛事分类</a></li>
+        <li><a href="/#rank">热度榜单</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>内容板块</h4>
+      <ul>
+        <li><a href="/#deep-dive">深度复盘</a></li>
+        <li><a href="/#guide">观赛指南</a></li>
+        <li><a href="/#faq">常见问答</a></li>
+        <li><a href="/#comments">社区热评</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>延伸阅读</h4>
+      <ul>
+        <li><a href="/#news">赛事资讯</a></li>
+        <li><a href="/#related">延伸方向</a></li>
+        <li><a href="/#overview">领域概览</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 91今日大赛 · 内容聚合展示</span>
+    <span>部分内容为示例数据，仅用于展示页面结构</span>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // 搜索筛选
+    var searchInput = document.getElementById('search-input');
+    var searchBtn = document.getElementById('search-btn');
+    var featuredGrid = document.getElementById('featured-grid');
+    var noResult = document.getElementById('no-result');
+
+    function filterCards() {
+      var query = searchInput.value.trim().toLowerCase();
+      var cards = featuredGrid.querySelectorAll('.event-card');
+      var visibleCount = 0;
+      cards.forEach(function(card) {
+        var text = card.textContent.toLowerCase();
+        if (!query || text.indexOf(query) !== -1) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    if (searchInput && searchBtn) {
+      searchBtn.addEventListener('click', filterCards);
+      searchInput.addEventListener('input', filterCards);
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          filterCards();
+        }
+      });
+    }
+
+    // 分类入口点击定位到赛程
+    document.querySelectorAll('.category-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        location.hash = '#schedule';
+      });
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          location.hash = '#schedule';
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+  </html>
